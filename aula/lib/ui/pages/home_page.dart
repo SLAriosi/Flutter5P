@@ -9,6 +9,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _etanolController = TextEditingController();
+  final _gasolinaController = TextEditingController();
+  var _resultado = 'Resultado';
+
   @override
   Widget build(BuildContext context) {
     return Placeholder(
@@ -21,14 +25,48 @@ class _HomePageState extends State<HomePage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              CampoTexto(),
-              CampoTexto(),
-              ElevatedButton(onPressed: () {}, child: Text('Calcular')),
-              Text('Resultado'),
+              CampoTexto(
+                  _etanolController,
+                  'Etanol'
+              ),
+
+              CampoTexto(
+                _gasolinaController,
+                'Gasolina',
+                // Se você for adicionar um item opcional você deve colocar o nome primeiro seguido de dois pontos.
+                icone: Icon(Icons.local_gas_station),
+              ),
+
+              ElevatedButton(onPressed: _calcular, child: Text('Calcular')),
+
+              Text(_resultado),
             ],
           ),
-        )
+        ),
       ),
     );
+  }
+
+  void _calcular() {
+    if (_etanolController.text.isEmpty) {
+      _resultado = 'Etanol sem valor!';
+      return;
+    }
+    if (_gasolinaController.text.isEmpty) {
+      _resultado = 'Gasolina sem valor!';
+      return;
+    }
+
+    var valorEtanol = double.parse(_etanolController.text);
+    var valorGasolina = double.parse(_gasolinaController.text);
+
+    if (valorEtanol <= (valorGasolina * 0.7)) {
+      _resultado = 'Etanol é Melhor!!!';
+    } else {
+      _resultado = 'Gasolina é Melhor!!!';
+    }
+    setState(() {
+
+    });
   }
 }
